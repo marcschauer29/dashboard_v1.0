@@ -1,0 +1,1 @@
+export { fetchShopifyData } from '../lib/shopifyUtils';
