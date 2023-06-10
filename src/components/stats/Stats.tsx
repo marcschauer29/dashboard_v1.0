@@ -1,8 +1,8 @@
+// StatsComponent.js
+
 import React, { useEffect, useState } from 'react';
 import { Box, Text, useColorModeValue, Flex, Badge } from '@chakra-ui/react';
-
-// Adjust the path based on your project structure
-import { fetchShopifyData } from '../../lib/shopifyUtils';
+import { fetchBigQueryData } from '../../lib/bigquery_shopify'; // Adjust the path based on your project structure
 
 type Stat = {
   name: string;
@@ -19,28 +19,28 @@ const StatsComponent: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const shopifyData = await fetchShopifyData();
-        const formattedShopifyData = {
-          totalRevenue: shopifyData.totalRevenue.toLocaleString('de-DE', {
+        const bigQueryData = await fetchBigQueryData();
+        const formattedBigQueryData = {
+          totalRevenue: bigQueryData.totalRevenue.toLocaleString('de-DE', {
             style: 'currency',
             currency: 'EUR',
           }),
-          totalOrders: shopifyData.totalOrders.toLocaleString(),
-          totalProductsSold: shopifyData.totalProductsSold.toLocaleString(),
-          averageOrderValue: shopifyData.averageOrderValue.toLocaleString('de-DE', {
+          totalOrders: bigQueryData.totalOrders.toLocaleString(),
+          totalProductsSold: bigQueryData.totalProductsSold.toLocaleString(),
+          averageOrderValue: bigQueryData.averageOrderValue.toLocaleString('de-DE', {
             style: 'currency',
             currency: 'EUR',
           }),
         };
         const mappedStats: Stat[] = [
-          { name: 'Bruttoumsatz', value: formattedShopifyData.totalRevenue, change: '+4.75%', changeType: 'positive' },
-          { name: 'Bestellungen', value: formattedShopifyData.totalOrders, change: '+54.02%', changeType: 'negative' },
-          { name: 'Verkaufte Produkte', value: formattedShopifyData.totalProductsSold, change: '-1.39%', changeType: 'positive' },
-          { name: 'AOV', value: formattedShopifyData.averageOrderValue, change: '+10.18%', changeType: 'negative' },
+          { name: 'Bruttoumsatz', value: formattedBigQueryData.totalRevenue, change: '+4.75%', changeType: 'positive' },
+          { name: 'Bestellungen', value: formattedBigQueryData.totalOrders, change: '+54.02%', changeType: 'negative' },
+          { name: 'Verkaufte Produkte', value: formattedBigQueryData.totalProductsSold, change: '-1.39%', changeType: 'positive' },
+          { name: 'AOV', value: formattedBigQueryData.averageOrderValue, change: '+10.18%', changeType: 'negative' },
         ];
         setStats(mappedStats);
       } catch (error) {
-        console.error('Failed to fetch Shopify data:', error);
+        console.error('Failed to fetch BigQuery data:', error);
       }
     };
 
